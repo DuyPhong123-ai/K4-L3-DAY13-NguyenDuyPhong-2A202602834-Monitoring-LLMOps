@@ -2,12 +2,18 @@ service: day13-l3a-monitoring-llmops-lab
 primary_slo:
   name: fast_successful_requests
   window: 28d
+  description: 99.5% request phải trả response thành công trong không quá 3000 ms.
   sli:
     good_event: 'event == "response_sent" and latency_ms <= 3000'
     total_event: 'event == "request_received"'
   target_percent: 99.5
-  error_budget_percent: 0.5
-  note: Học viên phải giải thích hoặc điều chỉnh ngưỡng bằng baseline của mình.
+  latency_threshold_ms: 3000
+  rationale: Ngưỡng 3 giây cao hơn baseline bình thường khoảng 150-500 ms nhưng vẫn phát hiện rõ sự cố chậm 2.5 giây cộng thời gian LLM.
+  error_budget:
+    percent: 0.5
+    allowed_bad_events_formula: total_requests * 0.005
+    allowed_bad_minutes_per_28d: 201.6
+    human_readable: 3 giờ 21 phút 36 giây trong cửa sổ 28 ngày nếu quy đổi theo thời gian.
 guardrails:
   error_rate_pct_max: 2
   daily_cost_usd_max: 2.5

@@ -1,0 +1,18 @@
+Langfuse project: day13-k4-l3a-2A202602834
+Prompt: day13-chat
+
+Promote evidence:
+- production pointed to version 2
+- trace_id: 13541d54a9331752e94b8a7d5773a315
+- correlation_id: prompt-production-64a96dc3
+- trace metadata: prompt_label=production, prompt_version=2
+
+Rollback evidence:
+- production moved back to version 1
+- trace_id: 342fe2f13b367121d641a5103d3697d3
+- correlation_id: prompt-production-f8ff0b78
+- trace metadata: prompt_label=production, prompt_version=1
+
+Final labels:
+- v1: baseline, production
+- v2: candidate, latest

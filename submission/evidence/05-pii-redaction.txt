@@ -1,0 +1,8 @@
+Source: data/logs.jsonl
+
+Email:      "My email is [REDACTED_EMAIL]"
+Phone:      "Here is my phone [REDACTED_PHONE_VN]"
+Card:       "credit card [REDACTED_CREDIT_CARD]"
+CCCD:       "PII check: citizen [REDACTED_CCCD]"
+
+Independent validator result: Potential PII leaks detected: 0

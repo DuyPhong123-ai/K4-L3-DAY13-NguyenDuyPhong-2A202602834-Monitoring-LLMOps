@@ -1,0 +1,20 @@
+Langfuse project: day13-k4-l3a-2A202602834
+Trace ID: f5d535ad16ed7610292a76e94957ab54
+
+Root context:
+- correlation_id: req-54af67e6
+- user_id_hash: dc9b2ec8da9d
+- session_id: k4-l3a-challenge-s03
+- feature: monitoring
+- model: claude-sonnet-4-5
+- environment: dev
+- prompt_name: day13-chat
+- prompt_label: production
+- prompt_version: 1
+- prompt_source: langfuse
+
+Generation:
+- model: claude-sonnet-4-5
+- usage: input=55, output=121, total=176
+- cost USD: input=0.000165, output=0.001815, total=0.001980
+- raw PII detected: 0

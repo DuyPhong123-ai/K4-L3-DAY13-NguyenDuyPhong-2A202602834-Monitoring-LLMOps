@@ -1,0 +1,9 @@
+Challenge ID: day13-k4-l3a-monitoring-llmops-v1
+Incident: rag_slow
+Selected correlation ID: req-54af67e6
+Source: data/logs.jsonl
+
+{"service":"api","payload":{"message_preview":"Summarize the observability workflow for an AI API."},"event":"request_received","feature":"monitoring","session_id":"k4-l3a-challenge-s03","model":"claude-sonnet-4-5","env":"dev","user_id_hash":"dc9b2ec8da9d","correlation_id":"req-54af67e6","level":"info","ts":"2026-09-29T09:17:17.604375Z"}
+{"service":"api","latency_ms":2652,"ttft_ms":50,"tokens_in":55,"tokens_out":121,"cost_usd":0.00198,"quality_score":0.8,"tool_name":"retrieval","tool_success":true,"event":"response_sent","feature":"monitoring","session_id":"k4-l3a-challenge-s03","model":"claude-sonnet-4-5","env":"dev","user_id_hash":"dc9b2ec8da9d","correlation_id":"req-54af67e6","level":"info","ts":"2026-09-29T09:17:20.259173Z"}
+
+The application latency of 2652 ms exceeds the challenge threshold of 2000 ms.

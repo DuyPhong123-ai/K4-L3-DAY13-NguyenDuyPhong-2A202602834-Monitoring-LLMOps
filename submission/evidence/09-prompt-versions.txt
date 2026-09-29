@@ -1,0 +1,9 @@
+Langfuse project: day13-k4-l3a-2A202602834
+Prompt: day13-chat
+
+Version 1 labels: baseline, production
+Version 2 labels: candidate, latest
+
+Comparison traces using the same input:
+- baseline / v1: 082e08366971d29856bd82d1b3b5f0cc
+- candidate / v2: cdaf77a5dac7c8949d819b0b14e9a6b8

@@ -1,0 +1,9 @@
+Langfuse project: day13-k4-l3a-2A202602834
+Trace ID: f5d535ad16ed7610292a76e94957ab54
+Correlation ID: req-54af67e6
+
+lab-agent-run [AGENT] 2.654 s
+├── retrieve-context [RETRIEVER] 2.501 s
+└── generate-response [GENERATION] 0.151 s
+
+Both child observations have parent_observation_id equal to the lab-agent-run observation ID.
