@@ -9,4 +9,3 @@ data/audit.jsonl
 config/challenge.json
 .pytest_cache/
 .antigravity/
-config/challenge.json

@@ -8,6 +8,7 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from structlog.contextvars import bind_contextvars
 
 from .agent import LabAgent
+from .audit import write_audit_event
 from .dashboard import render_dashboard
 from .incidents import disable, enable, status
 from .logging_config import configure_logging, get_logger
@@ -113,20 +114,58 @@ async def chat(request: Request, body: ChatRequest) -> ChatResponse:
 
 
 @app.post("/incidents/{name}/enable")
-async def enable_incident(name: str) -> JSONResponse:
+async def enable_incident(name: str, request: Request) -> JSONResponse:
+    actor_id_hash = hash_user_id(request.headers.get("x-actor-id", "control-plane"))
     try:
         enable(name)
         log.warning("incident_enabled", service="control", payload={"name": name})
+        write_audit_event(
+            event="incident_control",
+            action="enable",
+            outcome="success",
+            actor_id_hash=actor_id_hash,
+            correlation_id=request.state.correlation_id,
+            resource=f"incident/{name}",
+            metadata={"incident": name},
+        )
         return JSONResponse({"ok": True, "incidents": status()})
     except KeyError as exc:
+        write_audit_event(
+            event="incident_control",
+            action="enable",
+            outcome="failure",
+            actor_id_hash=actor_id_hash,
+            correlation_id=request.state.correlation_id,
+            resource=f"incident/{name}",
+            metadata={"error_type": type(exc).__name__},
+        )
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
 
 @app.post("/incidents/{name}/disable")
-async def disable_incident(name: str) -> JSONResponse:
+async def disable_incident(name: str, request: Request) -> JSONResponse:
+    actor_id_hash = hash_user_id(request.headers.get("x-actor-id", "control-plane"))
     try:
         disable(name)
         log.warning("incident_disabled", service="control", payload={"name": name})
+        write_audit_event(
+            event="incident_control",
+            action="disable",
+            outcome="success",
+            actor_id_hash=actor_id_hash,
+            correlation_id=request.state.correlation_id,
+            resource=f"incident/{name}",
+            metadata={"incident": name},
+        )
         return JSONResponse({"ok": True, "incidents": status()})
     except KeyError as exc:
+        write_audit_event(
+            event="incident_control",
+            action="disable",
+            outcome="failure",
+            actor_id_hash=actor_id_hash,
+            correlation_id=request.state.correlation_id,
+            resource=f"incident/{name}",
+            metadata={"error_type": type(exc).__name__},
+        )
         raise HTTPException(status_code=404, detail=str(exc)) from exc

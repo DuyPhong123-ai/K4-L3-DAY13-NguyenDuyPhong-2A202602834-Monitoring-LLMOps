@@ -19,7 +19,12 @@ Tên file gợi ý:
 12-incident-metric.png
 13-incident-log.png
 14-incident-trace.png
+15-cost-optimization.txt
+16-automation.txt
+17-audit-log.txt
 ```
+
+Evidence 15–17 dành cho bonus: benchmark cost trước/sau trên cùng workload, automation/CI và audit log có schema, retention, truy vấn minh họa.
 
 Có thể dùng `.txt` cho output của tests/validators. Có thể tách dashboard thành nhiều ảnh nếu một ảnh không đọc rõ.
 

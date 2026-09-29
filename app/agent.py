@@ -5,6 +5,7 @@ import time
 from dataclasses import dataclass
 
 from . import metrics
+from .cost_optimization import CostPolicy, compact_documents, estimate_cost
 from .mock_llm import FakeLLM
 from .mock_rag import retrieve
 from .pii import hash_user_id, summarize_text
@@ -24,9 +25,14 @@ class AgentResult:
 
 
 class LabAgent:
-    def __init__(self, model: str = "claude-sonnet-4-5") -> None:
+    def __init__(
+        self,
+        model: str = "claude-sonnet-4-5",
+        cost_policy: CostPolicy | None = None,
+    ) -> None:
         self.model = model
         self.llm = FakeLLM(model=model)
+        self.cost_policy = cost_policy or CostPolicy.from_env()
 
     @observe(name="lab-agent-run", as_type="agent", capture_input=False, capture_output=False)
     def run(
@@ -65,10 +71,11 @@ class LabAgent:
                     }
                 )
 
+            prompt_documents = compact_documents(docs, self.cost_policy.max_context_chars)
             prompt = resolve_prompt(
                 langfuse_client,
                 feature=feature,
-                docs=docs,
+                docs=prompt_documents,
                 message=message,
                 enabled=tracing_enabled(),
             )
@@ -85,12 +92,20 @@ class LabAgent:
                         "prompt_label": prompt.label,
                         "prompt_version": prompt.version,
                         "prompt_source": prompt.source,
+                        "max_context_chars": self.cost_policy.max_context_chars or 0,
+                        "max_output_tokens": self.cost_policy.max_output_tokens or 0,
                     },
                 ) as generation_observation:
-                    response = self.llm.generate(prompt.text)
+                    response = self.llm.generate(
+                        prompt.text,
+                        max_output_tokens=self.cost_policy.max_output_tokens,
+                    )
                     input_cost = (response.usage.input_tokens / 1_000_000) * 3
                     output_cost = (response.usage.output_tokens / 1_000_000) * 15
-                    cost_usd = round(input_cost + output_cost, 6)
+                    cost_usd = estimate_cost(
+                        response.usage.input_tokens,
+                        response.usage.output_tokens,
+                    )
                     generation_observation.update(
                         output={"answer_preview": summarize_text(response.text, max_len=200)},
                         usage_details={
@@ -145,9 +160,7 @@ class LabAgent:
         )
 
     def _estimate_cost(self, tokens_in: int, tokens_out: int) -> float:
-        input_cost = (tokens_in / 1_000_000) * 3
-        output_cost = (tokens_out / 1_000_000) * 15
-        return round(input_cost + output_cost, 6)
+        return estimate_cost(tokens_in, tokens_out)
 
     def _heuristic_quality(self, question: str, answer: str, docs: list[str]) -> float:
         score = 0.5

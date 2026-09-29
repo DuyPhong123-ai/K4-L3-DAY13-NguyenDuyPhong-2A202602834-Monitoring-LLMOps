@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Day 13 Audit Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "ts",
+    "event",
+    "action",
+    "outcome",
+    "actor_id_hash",
+    "correlation_id",
+    "resource",
+    "metadata"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "event_id": {"type": "string", "pattern": "^audit-[0-9a-f]{12}$"},
+    "ts": {"type": "string", "format": "date-time"},
+    "event": {"type": "string", "minLength": 1},
+    "action": {"type": "string", "minLength": 1},
+    "outcome": {"enum": ["success", "failure"]},
+    "actor_id_hash": {"type": "string", "minLength": 8},
+    "correlation_id": {"type": "string", "pattern": "^req-[0-9a-f]{8}$"},
+    "resource": {"type": "string", "minLength": 1},
+    "metadata": {"type": "object"}
+  }
+}

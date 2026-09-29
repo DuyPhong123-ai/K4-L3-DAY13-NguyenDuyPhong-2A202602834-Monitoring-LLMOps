@@ -1,0 +1,13 @@
+Automation: .github/workflows/quality-gates.yml
+Triggers: push main, pull_request, workflow_dispatch
+
+Local reproduction:
+- python -m pytest -q -> 34 passed
+- python scripts/validate_dashboard.py -> HỢP LỆ: 6/6
+- python scripts/security_scan.py -> PASS
+- python scripts/cost_benchmark.py --min-saving-pct 20 -> PASS (37.54%)
+
+Security scan checks:
+- no committed .env, config/challenge.json, data/logs.jsonl, or data/audit.jsonl
+- no high-confidence Langfuse/generic secret pattern
+- no raw email, VN phone, CCCD, or payment card in text evidence/report

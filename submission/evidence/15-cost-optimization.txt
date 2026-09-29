@@ -1,0 +1,18 @@
+Command: python scripts/cost_benchmark.py --min-saving-pct 20
+
+Workload: data/sample_queries.jsonl
+Workload SHA256 (first 16): c8b8d64dbf57ff37
+Requests: 10
+Same workload: true
+Pricing: input 3 USD / 1M tokens; output 15 USD / 1M tokens
+
+Baseline policy: no context/output cap
+Baseline tokens: input=536, output=1333
+Baseline cost: USD 0.021603
+
+Optimized policy: max_context_chars=48, max_output_tokens=80
+Optimized tokens: input=498, output=800
+Optimized cost: USD 0.013494
+
+Cost saving: 37.54%
+PASS: cost saving >= 20% on the identical workload.

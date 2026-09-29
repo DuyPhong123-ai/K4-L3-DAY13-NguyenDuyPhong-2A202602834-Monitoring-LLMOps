@@ -1,0 +1,13 @@
+Audit stream: data/audit.jsonl (ignored runtime artifact)
+Schema: config/audit_schema.json, version 1.0
+Retention: 30 days
+Query CLI: scripts/query_audit.py
+
+Demo:
+- inserted 2 records: one 31 days old and one current
+- records after automatic retention: 1
+- query correlation_id=req-a1b2c3d4 matched 1
+- actor_id is hashed
+- metadata email is stored as [REDACTED_EMAIL]
+
+Audit demo: PASS (retention enforced, query matched, PII scrubbed)
