@@ -6,7 +6,8 @@
 - **MSSV:** 2A202602834
 - **Lớp:** K4-L3A
 - **Repository URL:** https://github.com/DuyPhong123-ai/K4-L3-DAY13-NguyenDuyPhong-2A202602834-Monitoring-LLMOps
-- **Commit SHA nộp:** lấy bằng `git rev-parse HEAD` sau khi tạo commit nộp cuối; commit phải chứa report và toàn bộ evidence bên dưới.
+- **Commit SHA chứa source/evidence đã kiểm tra:** `75c24334202af17ca52139aa50330bbff40ee72a`.
+- **Commit SHA nộp trên LMS:** commit mới nhất của nhánh `main` sau khi cập nhật báo cáo/evidence lần cuối; SHA này được nộp cùng URL repository cá nhân.
 - **Challenge ID:** `day13-k4-l3a-monitoring-llmops-v1`
 - **Tên project Langfuse cá nhân:** `day13-k4-l3a-2A202602834`
 
@@ -31,7 +32,7 @@
 | Incident log | [13-incident-log.txt](evidence/13-incident-log.txt) |
 | Incident trace | [14-incident-trace.png](evidence/14-incident-trace.png) |
 
-> Evidence 06–10 và 14 được truy vấn từ project Langfuse cá nhân bằng Observations API v2 và không chứa API key/secret. Trước khi nộp, nên chụp thêm UI Langfuse cho 06–10 và 14 để tên project và waterfall hiển thị trực quan theo rubric.
+> Evidence 06–10 và 14 gồm ảnh UI từ project Langfuse cá nhân `day13-k4-l3a-2A202602834`, kèm các file `.txt` truy vấn qua Observations API v2 để đối chiếu ID và metadata. Các evidence không chứa API key/secret.
 
 ## 3. Kết quả kỹ thuật
 
@@ -139,7 +140,7 @@ Output client quan sát 12.89–15.55 giây khi concurrency=5, cao hơn latency 
 - **Metrics → Logs → Traces:** metrics khoanh vùng triệu chứng/thời gian; log cung cấp request cụ thể qua `correlation_id`; trace tách thời gian theo từng child observation để xác định root cause.
 - **Prompt/token/cost/SLO:** prompt version cho phép so sánh và rollback không cần deploy code; token/cost giúp phát hiện cost spike; SLO và error budget chuyển metric kỹ thuật thành cam kết vận hành có thể cảnh báo.
 - **Bài học chính:** chỉ nhìn tổng latency không đủ. Cần child span đúng loại và đúng quan hệ để phân biệt retrieval, prompt fetch, LLM generation và queueing.
-- **Hạn chế:** LLM và RAG là mô phỏng; metrics trong `/metrics` nằm trong memory và reset khi restart; dashboard local đọc toàn bộ JSONL; alert mới là contract/runbook, chưa gửi Slack thật. Evidence Langfuse dạng text API nên cần bổ sung screenshot UI cá nhân trước khi nộp để tối đa điểm trình bày.
+- **Hạn chế:** LLM và RAG là mô phỏng; metrics trong `/metrics` nằm trong memory và reset khi restart; dashboard local đọc toàn bộ JSONL; alert mới là contract/runbook, chưa gửi Slack thật. Evidence Langfuse đã có cả ảnh UI và bản đối chiếu text từ API, nhưng hệ thống lab chưa có backend metrics/alert production thực tế.
 
 ## 9. Checklist trước khi nộp
 
@@ -152,5 +153,6 @@ Output client quan sát 12.89–15.55 giây khi concurrency=5, cao hơn latency 
 - [x] Có một SLO/error budget và ba alert/runbook.
 - [x] Incident evidence nối metric → log/correlation ID → trace → span → root cause.
 - [x] Không có secret hoặc PII thô trong report/evidence.
-- [ ] Chụp bổ sung UI Langfuse 06–10 và 14 nếu giảng viên yêu cầu ảnh thay vì evidence `.txt` từ API.
-- [ ] Tạo commit cuối, điền SHA nộp và push commit lên remote cá nhân trước deadline.
+- [x] Đã bổ sung ảnh UI Langfuse cho evidence 06–10 và 14, đồng thời giữ evidence `.txt` để đối chiếu trace ID, correlation ID và metadata.
+- [x] Evidence `10a` chứng minh `production` từng ở version 2; trạng thái cuối đã được kiểm tra lại là v1 `[baseline, production]` và v2 `[candidate, latest]`.
+- [ ] Tạo commit cuối chứa report và ảnh `10a` mới, push lên remote cá nhân và nộp SHA mới nhất trên LMS trước deadline.
